@@ -1,6 +1,6 @@
 # Chapter 1 (C# Idioms) Notes
 
-## Item 1: Difference between IEnumerable and IQueryable 
+## Item 1: Difference between IEnumerable and IQueryable
 - IEnumerable 
     - Returning a query as an IEnumerable<T> sequence means that subsequent operations use the LINQ to Objects implementation and are executed using delegates. This results in the sort operation occuring locally. 
     - Enumerable executes locally, the lambda expressions have been compiled into methods, and must execute on the local machine. This results in pulling more data from whatever source you are querying. 
@@ -46,7 +46,7 @@ The above code has a performance issue. By strongly declaring the return value, 
 ### TL;DR
 - Explicitly declare all numeric types (int, float, double, and others) rather than using a var declaration. For everything else, just use var.
 
-## Item 2: Prefer readonly to const
+## Item 2: Prefer readonly to const 
 - C# has two different versions of constants: compile-time constants and runtime constants
 - You should prefer runtime constants to compile-time constants. Though compile time-constants are slighly faster, they are less flexible. 
 - Reserve compile-time constants for when performance is critical and the value of the constant will never change between releases.
@@ -134,7 +134,7 @@ You actually receive no output. The loop uses the value 105 for its start and 10
 ### TL;DR
 - `const` must be used when the value must be available at compile time: attribute parameters, switch case labels, and enum definitions, and those rare times when you mean to defined a value that does not change from release to release. For everything else, prefer the increased flexibility of readonly constants.
 
-## Item 3: Prefer the `is` or `as` Operators to Casts
+## Item 3: Prefer the `is` or `as` Operators to Casts <a name="item3"></a>
 **Use the `as` operator whenever you can because it is safer than blindly casting and is more efficient at runtime.**
 
 - The `as` and `is` operator do not perform an user-defined conversion. They succeed only if the runtime type matches the sought type; they rarely construct a new object to satisfy a request. (The `as` operator will create a new type when converting a boxed value type to an unboxed nullable value type.)
@@ -214,7 +214,7 @@ catch (InvalidCastException)
 
 **User-defined conversion operators operate only on the compile-time type of an object, not on the runtime.**
 
-## Item 4: Replace `string.Format()` with Interpolated Strings
+## Item 4: Replace `string.Format()` with Interpolated Strings <a name="item4"></a>
 - Enables the compiler to provide better static type checking, which descreases the changes of mistakes. It also provides a richer syntax for the expressions that produce the string.
 
 ```
@@ -251,12 +251,12 @@ var output = $@"The First five items are: {src.Take(5).Select(
 n => $@"Item: {n.ToString()}").Aggregate((c, a) => $@"{c}{Environment.NewLine}{a}")})";
 ```
 
-## Item 5: Prefer FormattableString for Culture-Specific Strings
+## Item 5: Prefer FormattableString for Culture-Specific Strings <a name="item5"></a>
 
 ### TL;DR
 - When you need a specific culture, you must explicitly tell the string interpolation to create a `FomattableString`, and you then can convert that into a string using any specific culture that you want.
 
-## Item 6: Avoid String-ly Typed APIs
+## Item 6: Avoid String-ly Typed APIs <a name="item6"></a>
 
 The `nameof()` expression was added in C# 6.0 to replace a symbol with a string containing its name. The most common exaple of this is to implement the `INotifyPropertyChanged` interface:
 ```
@@ -290,7 +290,7 @@ private static void ExceptionMessage(object thisCantBeNull)
     }
 ```
 
-## Item 7: Expresss Callbacks with Delegates
+## Item 7: Expresss Callbacks with Delegates <a name="item7"></a>
 
 - Anytime you need to configure the communication between classes and you desire less coupling than you get from interfaces, a delegate is the right choice. Delegates let you configure the target at runtime and notify multiple clients. 
 - The .NET Framework library defines many common delegate forms using `Predicate<T>`, `Action<>`, and `Func<>`.
@@ -307,7 +307,7 @@ var test = numbers.TrueForAll(n => n < 50);
 - All delegates are multicast delegates. Multicast delegates wrap all the target functions that hav ebeen added to the delegate in a single call. This will mean that the return value will be the return value of the last target function invoked by the multicast delegate. 
 - Client callbacks should be implemented using delegates in .NET
 
-## Item 8: Use the Null Conditional Operator for Event Invocations
+## Item 8: Use the Null Conditional Operator for Event Invocations <a name="item8"></a>
 
 Old code to handle a safe event invocation would look like this:
 ```
@@ -332,7 +332,7 @@ public void RaiseUpdates()
 ```
 This code uses the null conditional operator `?.` to safely invoke the event handles and results in thread-safe operations.
 
-## Item 9: Minimize Boxing and Unboxing
+## Item 9: Minimize Boxing and Unboxing <a name="item9"></a>
 - The .NET Framework was deisnged with a single reference type, System.Object, at the root of the entire object hierarchy. 
 - Boxing places a value type in an untyped refernce object to allow the value type to be used where a reference type is expected. 
 - Unboxing extracts a copy of that value type from the box. 
@@ -374,7 +374,7 @@ Console.WriteLine(o.ToString());
 
 ```
 
-## Item 10: Use the `new` Modifier only to React to Base Class Updates
+## Item 10: Use the `new` Modifier only to React to Base Class Updates <a name="item10"></a>
 You would assume that these two block of code do the same thing, if the two classes are related by inheritance
 ```
 object c = MakeObject();
